@@ -42,11 +42,15 @@ class OptimizerFactory
             'execute_only_first_png_optimizer' => true,
             'execute_only_first_jpeg_optimizer' => true,
             'optipng_options' => ['-i0', '-o2', '-quiet'],
-            'pngquant_options' => ['--force', '--skip-if-larger'],
+            'pngquant_options' => ['--force', '--ext .png'],
             'pngcrush_options' => ['-reduce', '-q', '-ow'],
             'pngout_options' => ['-s3', '-q', '-y'],
             'gifsicle_options' => ['-b', '-O5'],
-            'jpegoptim_options' => ['--strip-all', '--all-progressive'],
+            'jpegoptim_options' => ['--strip-all', '--all-progressive', '--max=60'],  // added max=60 parameter to optimize jpeg images
+            'jpegoptim_options95' => ['--strip-all', '--all-progressive', '--max=95'],  // added max=95 parameter to optimize jpeg images
+            'jpegoptim_options90' => ['--strip-all', '--all-progressive', '--max=90'],  // added max=90 parameter to optimize jpeg images
+            'jpegoptim_options80' => ['--strip-all', '--all-progressive', '--max=80'],  // added max=80 parameter to optimize jpeg images
+            'jpegoptim_options70' => ['--strip-all', '--all-progressive', '--max=70'],  // added max=70 parameter to optimize jpeg images
             'jpegtran_options' => ['-optimize', '-progressive'],
             'advpng_options' => ['-z', '-4', '-q'],
             'svgo_options' => ['--disable=cleanupIDs'],
@@ -107,6 +111,18 @@ class OptimizerFactory
 
         $this->optimizers['jpegoptim'] = $this->wrap(
             $this->commandOptimizer('jpegoptim', $this->options['jpegoptim_options'])
+        );
+          $this->optimizers['jpegoptim_95'] = $this->wrap(
+            $this->commandOptimizer('jpegoptim', $this->options['jpegoptim_options95'])
+        );
+          $this->optimizers['jpegoptim_90'] = $this->wrap(
+            $this->commandOptimizer('jpegoptim', $this->options['jpegoptim_options90'])
+        );
+          $this->optimizers['jpegoptim_80'] = $this->wrap(
+            $this->commandOptimizer('jpegoptim', $this->options['jpegoptim_options80'])
+        );
+          $this->optimizers['jpegoptim_70'] = $this->wrap(
+            $this->commandOptimizer('jpegoptim', $this->options['jpegoptim_options70'])
         );
         $this->optimizers['jpegtran'] = $this->wrap(
             $this->commandOptimizer('jpegtran', $this->options['jpegtran_options'],
