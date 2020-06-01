@@ -46,11 +46,11 @@ class OptimizerFactory
             'pngcrush_options' => ['-reduce', '-q', '-ow'],
             'pngout_options' => ['-s3', '-q', '-y'],
             'gifsicle_options' => ['-b', '-O5'],
-            'jpegoptim_options' => ['--strip-all', '--all-progressive', '--max=60'],  // added max=60 parameter to optimize jpeg images
-            'jpegoptim_options95' => ['--strip-all', '--all-progressive', '--max=95'],  // added max=95 parameter to optimize jpeg images
-            'jpegoptim_options90' => ['--strip-all', '--all-progressive', '--max=90'],  // added max=90 parameter to optimize jpeg images
-            'jpegoptim_options80' => ['--strip-all', '--all-progressive', '--max=80'],  // added max=80 parameter to optimize jpeg images
-            'jpegoptim_options70' => ['--strip-all', '--all-progressive', '--max=70'],  // added max=70 parameter to optimize jpeg images
+            'jpegoptim_options' => array('--strip-all', '--all-progressive', '--max=60'),  // added max=60 parameter to optimize jpeg images
+			'jpegoptim_options95' => array('--strip-all', '--all-progressive', '--max=95'),  // added max=95 parameter to optimize jpeg images
+			'jpegoptim_options90' => array('--strip-all', '--all-progressive', '--max=90'),  // added max=90 parameter to optimize jpeg images
+			'jpegoptim_options80' => array('--strip-all', '--all-progressive', '--max=80'),  // added max=80 parameter to optimize jpeg images
+            'jpegoptim_options70' => array('--strip-all', '--all-progressive', '--max=70'),  // added max=70 parameter to optimize jpeg images
             'jpegtran_options' => ['-optimize', '-progressive'],
             'advpng_options' => ['-z', '-4', '-q'],
             'svgo_options' => ['--disable=cleanupIDs'],
@@ -112,24 +112,24 @@ class OptimizerFactory
         $this->optimizers['jpegoptim'] = $this->wrap(
             $this->commandOptimizer('jpegoptim', $this->options['jpegoptim_options'])
         );
-          $this->optimizers['jpegoptim_95'] = $this->wrap(
-            $this->commandOptimizer('jpegoptim', $this->options['jpegoptim_options95'])
-        );
-          $this->optimizers['jpegoptim_90'] = $this->wrap(
-            $this->commandOptimizer('jpegoptim', $this->options['jpegoptim_options90'])
-        );
-          $this->optimizers['jpegoptim_80'] = $this->wrap(
-            $this->commandOptimizer('jpegoptim', $this->options['jpegoptim_options80'])
-        );
-          $this->optimizers['jpegoptim_70'] = $this->wrap(
-            $this->commandOptimizer('jpegoptim', $this->options['jpegoptim_options70'])
-        );
+        $this->optimizers['jpegoptim_95'] = $this->wrap(new CommandOptimizer(
+		new Command($this->executable('jpegoptim'), $this->options['jpegoptim_options95']) //add by charlizesmith
+		));
+		$this->optimizers['jpegoptim_90'] = $this->wrap(new CommandOptimizer(
+		new Command($this->executable('jpegoptim'), $this->options['jpegoptim_options90'])//add by charlizesmith
+		));
+		$this->optimizers['jpegoptim_80'] = $this->wrap(new CommandOptimizer(
+		new Command($this->executable('jpegoptim'), $this->options['jpegoptim_options80'])//add by charlizesmith
+		));
+		$this->optimizers['jpegoptim_70'] = $this->wrap(new CommandOptimizer(
+		new Command($this->executable('jpegoptim'), $this->options['jpegoptim_options70'])//add by charlizesmith
+        ));
         $this->optimizers['jpegtran'] = $this->wrap(
-            $this->commandOptimizer('jpegtran', $this->options['jpegtran_options'],
-                function ($filepath) {
-                    return ['-outfile', $filepath];
-                }
-            )
+        $this->commandOptimizer('jpegtran', $this->options['jpegtran_options'],
+        function ($filepath) {
+        return ['-outfile', $filepath];
+        }
+        )
         );
         $this->optimizers['jpeg'] = $this->optimizers['jpg'] = $this->wrap(new ChainOptimizer([
             $this->unwrap($this->optimizers['jpegtran']),
