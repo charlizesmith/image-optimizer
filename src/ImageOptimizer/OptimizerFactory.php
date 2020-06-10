@@ -42,7 +42,7 @@ class OptimizerFactory
             'execute_only_first_png_optimizer' => true,
             'execute_only_first_jpeg_optimizer' => true,
             'optipng_options' => ['-i0', '-o2', '-quiet'],
-            'pngquant_options' => ['--force', '--ext .png'],
+            'pngquant_options' => ['--force'],
             'pngcrush_options' => ['-reduce', '-q', '-ow'],
             'pngout_options' => ['-s3', '-q', '-y'],
             'gifsicle_options' => ['-b', '-O5'],
